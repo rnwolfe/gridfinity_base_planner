@@ -37,7 +37,6 @@ export interface MaterialSettings {
     | undefined;
 }
 
-
 export interface MaterialControlsProps {
   settings: MaterialSettings;
   onSettingsChange: (settings: MaterialSettings) => void;

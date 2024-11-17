@@ -29,13 +29,23 @@ export default function GridPlannerForm() {
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold text-gray-900">Base Dimensions</h2>
         <div className="flex items-center gap-2">
-          <span className={unit === "mm" ? "font-medium" : "text-muted-foreground"}>mm</span>
+          <span
+            className={unit === "mm" ? "font-medium" : "text-muted-foreground"}
+          >
+            mm
+          </span>
           <Switch
-          className="text-sm"
+            className="text-sm"
             checked={unit === "inches"}
             onCheckedChange={(checked) => setUnit(checked ? "inches" : "mm")}
           />
-          <span className={unit === "inches" ? "font-medium" : "text-muted-foreground"}>inches</span>
+          <span
+            className={
+              unit === "inches" ? "font-medium" : "text-muted-foreground"
+            }
+          >
+            inches
+          </span>
         </div>
       </div>
       <form onSubmit={handleSubmit} className="space-y-6">
@@ -86,11 +96,18 @@ export default function GridPlannerForm() {
               min={1}
               max={10}
               value={dimensions.maxGridX}
-              onChange={(e) => setDimensions({ ...dimensions, maxGridX: Number(e.target.value) })}
+              onChange={(e) =>
+                setDimensions({
+                  ...dimensions,
+                  maxGridX: Number(e.target.value),
+                })
+              }
               className="mt-1"
               required
             />
-            <p className="text-xs text-gray-500">Maximum grid units wide (1-10)</p>
+            <p className="text-xs text-gray-500">
+              Maximum grid units wide (1-10)
+            </p>
           </div>
           <div className="space-y-2">
             <Label htmlFor="maxGridY">Max Grid Height</Label>
@@ -100,11 +117,18 @@ export default function GridPlannerForm() {
               min={1}
               max={10}
               value={dimensions.maxGridY}
-              onChange={(e) => setDimensions({ ...dimensions, maxGridY: Number(e.target.value) })}
+              onChange={(e) =>
+                setDimensions({
+                  ...dimensions,
+                  maxGridY: Number(e.target.value),
+                })
+              }
               className="mt-1"
               required
             />
-            <p className="text-xs text-gray-500">Maximum grid units tall (1-10)</p>
+            <p className="text-xs text-gray-500">
+              Maximum grid units tall (1-10)
+            </p>
           </div>
         </div>
       </form>

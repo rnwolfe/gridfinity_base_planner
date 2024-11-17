@@ -6,10 +6,7 @@ import GridPlannerForm from "./GridPlannerForm";
 import GridVisualizer from "./GridVisualizer";
 import { calculateGridPlacements } from "../lib/gridPlacement";
 import MaterialControls from "./MaterialControls";
-import {
-  gridDimensionsAtom,
-  placedGridsAtom,
-} from "~/atoms/grid";
+import { gridDimensionsAtom, placedGridsAtom } from "~/atoms/grid";
 import { formDimensionsAtom } from "~/atoms/form";
 import { GridSummary } from "./GridSummary";
 import { InfoIcon } from "lucide-react";
@@ -41,13 +38,14 @@ export default function GridPlanner() {
       <div className="w-full select-none lg:w-2/3">
         {placedGrids.length > 0 && (
           <div className="flex flex-col gap-6 lg:flex-row">
-            <div className="w-full select-none lg:w-2/3 flex flex-col gap-2">
+            <div className="flex w-full select-none flex-col gap-2 lg:w-2/3">
               <GridVisualizer />
               <Alert>
                 <InfoIcon className="h-5 w-5" />
                 <AlertTitle>Visualizer Controls</AlertTitle>
                 <AlertDescription>
-                  Click and drag to rotate. Scroll to zoom. Hold shift while dragging to pan.
+                  Click and drag to rotate. Scroll to zoom. Hold shift while
+                  dragging to pan.
                 </AlertDescription>
               </Alert>
             </div>

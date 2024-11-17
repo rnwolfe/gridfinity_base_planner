@@ -16,15 +16,15 @@ export function CameraControls() {
   const handleTopView = () => {
     setCameraControl({ action: "topView", timestamp: Date.now() });
   };
-  
+
   useEffect(() => {
     handleReset();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="absolute top-4 right-4 z-50">
-      <div className="flex items-center gap-2 bg-slate-300 p-2 rounded-md">
+    <div className="absolute right-4 top-4 z-50">
+      <div className="flex items-center gap-2 rounded-md bg-slate-300 p-2">
         <span className="flex items-center gap-2 text-sm text-slate-800">
           Camera Controls
         </span>

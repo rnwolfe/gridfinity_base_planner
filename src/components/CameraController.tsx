@@ -87,7 +87,7 @@ export function CameraController() {
       animateCamera(position, target);
       setUserHasInteracted(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cameraControl.timestamp]);
 
   return (

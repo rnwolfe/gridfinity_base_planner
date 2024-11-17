@@ -6,7 +6,11 @@ import { Suspense } from "react";
 import * as THREE from "three";
 import GridfinityBase from "./GridfinityBase";
 import { useAtom } from "jotai";
-import { materialSettingsAtom, gridDimensionsAtom, placedGridsAtom } from "~/atoms/grid";
+import {
+  materialSettingsAtom,
+  gridDimensionsAtom,
+  placedGridsAtom,
+} from "~/atoms/grid";
 import { GridOutline } from "./GridOutline";
 import { GridLabel } from "./GridLabel";
 import { CameraControls } from "./CameraControls";
@@ -14,7 +18,8 @@ import { CameraController } from "~/components/CameraController";
 
 export default function GridVisualizer() {
   const [materialSettings] = useAtom(materialSettingsAtom);
-  const [{ width: overallWidth, height: overallHeight }] = useAtom(gridDimensionsAtom);
+  const [{ width: overallWidth, height: overallHeight }] =
+    useAtom(gridDimensionsAtom);
   const [grids] = useAtom(placedGridsAtom);
 
   const cellSize = 0.042; // 42mm in meters
@@ -33,7 +38,7 @@ export default function GridVisualizer() {
   const materialProps = getMaterialProperties(materialSettings.finish);
 
   return (
-    <div className="aspect-square w-full overflow-hidden rounded-lg border bg-white shadow-sm relative">
+    <div className="relative aspect-square w-full overflow-hidden rounded-lg border bg-white shadow-sm">
       <CameraControls />
       <Canvas
         shadows
@@ -56,7 +61,11 @@ export default function GridVisualizer() {
           <Suspense fallback={null}>
             {/* Background plane */}
             <mesh
-              position={[overallWidth / 2, -0.001, overallHeight / 2 - cellSize]}
+              position={[
+                overallWidth / 2,
+                -0.001,
+                overallHeight / 2 - cellSize,
+              ]}
               rotation={[-Math.PI / 2, 0, 0]}
             >
               <planeGeometry args={[overallWidth, overallHeight]} />
