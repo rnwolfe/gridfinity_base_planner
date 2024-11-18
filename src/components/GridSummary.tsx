@@ -3,6 +3,7 @@ import type { GridCount, PlacedGrid } from "~/types";
 import { useAtom } from "jotai";
 import { freeSpacesAtom } from "~/atoms/grid";
 import { measurementUnitAtom } from "~/atoms/form";
+import { X } from "lucide-react";
 
 
 export function GridSummary({ placedGrids }: { placedGrids: PlacedGrid[] }) {
@@ -83,18 +84,18 @@ export function GridSummary({ placedGrids }: { placedGrids: PlacedGrid[] }) {
             {spacerSummary.horizontalSpaces.map((space, index) => (
               <div
                 key={`h${index}`}
-                className="grid grid-cols-3 gap-4 text-sm text-gray-900"
+                className="grid grid-cols-2 gap-2 text-sm text-gray-900"
               >
-                <div>Horizontal Spacer {index + 1}</div>
-                <div className="text-center">1×</div>
-                <div className="text-right">
-                  {measurementUnit === "mm"
+                <div className="text-left">1×</div>
+                <div className="text-left">
+                  &nbsp;{measurementUnit === "mm"
                     ?   space.width
                     : mmToIn(space.width)}
-                  ×
+                  <X className="inline-block w-3 h-3 mx-1" />
                   {measurementUnit === "mm"
                     ? space.height
                     : mmToIn(space.height)}
+                    &nbsp;
                   {measurementUnit}
                 </div>
               </div>
@@ -102,18 +103,18 @@ export function GridSummary({ placedGrids }: { placedGrids: PlacedGrid[] }) {
             {spacerSummary.verticalSpaces.map((space, index) => (
               <div
                 key={`v${index}`}
-                className="grid grid-cols-3 gap-4 text-sm text-gray-900"
+                className="grid grid-cols-2 gap-2 text-sm text-gray-900"
               >
-                <div>Corner Spacer {index + 1}</div>
-                <div className="text-center">1×</div>
-                <div className="text-right">
-                  {measurementUnit === "mm"
+                <div className="text-left">1×</div>
+                <div className="text-left">
+                  &nbsp;{measurementUnit === "mm"
                     ? space.width
                     : mmToIn(space.width)}
-                  ×
+                  <X className="inline-block w-3 h-3 mx-1" />
                   {measurementUnit === "mm"
                     ? space.height
                     : mmToIn(space.height)}
+                    &nbsp;
                   {measurementUnit}
                 </div>
               </div>

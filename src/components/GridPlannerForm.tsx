@@ -5,6 +5,7 @@ import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { formDimensionsAtom, measurementUnitAtom } from "~/atoms/form";
 import { Switch } from "~/components/ui/switch";
+import { X } from "lucide-react";
 
 const MM_PER_INCH = 25.4;
 
@@ -69,7 +70,7 @@ export default function GridPlannerForm() {
             <p className="text-xs text-gray-500">Base width in {unit}</p>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="height">Height ({unit})</Label>
+            <Label htmlFor="height">Depth ({unit})</Label>
             <Input
               id="height"
               type="number"
@@ -87,48 +88,49 @@ export default function GridPlannerForm() {
             <p className="text-xs text-gray-500">Base height in {unit}</p>
           </div>
         </div>
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="maxGridX">Max Grid Width</Label>
-            <Input
-              id="maxGridX"
-              type="number"
-              min={1}
-              max={10}
-              value={dimensions.maxGridX}
-              onChange={(e) =>
-                setDimensions({
-                  ...dimensions,
-                  maxGridX: Number(e.target.value),
-                })
-              }
-              className="mt-1"
-              required
-            />
-            <p className="text-xs text-gray-500">
-              Maximum grid units wide (1-10)
-            </p>
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="maxGridY">Max Grid Height</Label>
-            <Input
-              id="maxGridY"
-              type="number"
-              min={1}
-              max={10}
-              value={dimensions.maxGridY}
-              onChange={(e) =>
-                setDimensions({
-                  ...dimensions,
-                  maxGridY: Number(e.target.value),
-                })
-              }
-              className="mt-1"
-              required
-            />
-            <p className="text-xs text-gray-500">
-              Maximum grid units tall (1-10)
-            </p>
+        <div className="space-y-2">
+          <span className="text-sm font-medium">
+            Maximum printable grid size (1-10)
+          </span>
+          <div className="my-0 flex items-start justify-start gap-2">
+            <div>
+              <Input
+                id="maxGridX"
+                type="number"
+                min={1}
+                max={10}
+                value={dimensions.maxGridX}
+                onChange={(e) =>
+                  setDimensions({
+                    ...dimensions,
+                    maxGridX: Number(e.target.value),
+                  })
+                }
+                className="mt-0 w-20"
+                required
+              />
+            </div>
+            <div className="flex h-[38px] items-center justify-center text-center">
+              <X className="h-4 w-4" />
+            </div>
+            <div>
+              {/* <Label htmlFor="maxGridY">&nbsp;</Label> */}
+              <Input
+                id="maxGridY"
+                type="number"
+                min={1}
+                max={10}
+                value={dimensions.maxGridY}
+                onChange={(e) =>
+                  setDimensions({
+                    ...dimensions,
+                    maxGridY: Number(e.target.value),
+                  })
+                }
+                className="w-20"
+                required
+              />
+            </div>
           </div>
         </div>
       </form>
