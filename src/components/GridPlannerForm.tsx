@@ -85,7 +85,7 @@ export default function GridPlannerForm() {
               className="mt-1"
               required
             />
-            <p className="text-xs text-gray-500">Base height in {unit}</p>
+            <p className="text-xs text-gray-500">Base depth in {unit}</p>
           </div>
         </div>
         <div className="space-y-2">
