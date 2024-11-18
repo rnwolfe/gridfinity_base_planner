@@ -66,13 +66,16 @@ export function calculateGridPlacements(
   height: number,
   maxGridX: number,
   maxGridY: number,
-): PlacedGrid[] {
-  // Convert dimensions to Gridfinity units (42mm)
+): { placedGrids: PlacedGrid[]; freeSpaces: Space[] } {
+  // Calculate total whole units and remainders
   const totalGridsX = Math.floor(width / 42);
   const totalGridsY = Math.floor(height / 42);
+  const remainderX = width % 42;
+  const remainderY = height % 42;
 
-  // Initialize the free spaces list with the entire area
-  const freeSpaces: Space[] = [
+  const MIN_USEFUL_SIZE = 1; // Minimum size to be considered useful
+
+  const workingSpaces: Space[] = [
     {
       x: 0,
       y: 0,
@@ -82,16 +85,22 @@ export function calculateGridPlacements(
   ];
 
   const placedGrids: PlacedGrid[] = [];
+  const unusableSpaces: Space[] = [];
 
-  while (freeSpaces.length > 0) {
-    const space = freeSpaces[0];
+  // Process main grid area
+  while (workingSpaces.length > 0) {
+    const space = workingSpaces[0];
+    if (!space) break;
 
-    // Find the largest grid that fits in this space
+    // Check if space is too small to be useful
+    if (space.width < MIN_USEFUL_SIZE || space.height < MIN_USEFUL_SIZE) {
+      unusableSpaces.push(workingSpaces.shift()!);
+      continue;
+    }
+
+    // Find the largest grid that fits
     let bestFit = null;
     let maxArea = 0;
-    if (!space) {
-      break;
-    }
 
     for (let x = 1; x <= Math.min(space.width, maxGridX); x++) {
       for (let y = 1; y <= Math.min(space.height, maxGridY); y++) {
@@ -104,11 +113,10 @@ export function calculateGridPlacements(
     }
 
     if (!bestFit) {
-      freeSpaces.shift();
+      unusableSpaces.push(workingSpaces.shift()!);
       continue;
     }
 
-    // Add the grid with its position
     placedGrids.push({
       x: bestFit.gridWidth,
       y: bestFit.gridHeight,
@@ -118,9 +126,76 @@ export function calculateGridPlacements(
       },
     });
 
-    // Split remaining space
-    splitSpace(freeSpaces, space, bestFit.gridWidth, bestFit.gridHeight);
+    workingSpaces.shift();
+
+    // Create right space if large enough
+    if (space.width - bestFit.gridWidth >= MIN_USEFUL_SIZE) {
+      workingSpaces.push({
+        x: space.x + bestFit.gridWidth,
+        y: space.y,
+        width: space.width - bestFit.gridWidth,
+        height: space.height,
+      });
+    } else if (space.width - bestFit.gridWidth > 0) {
+      // Add to unusable if too small
+      unusableSpaces.push({
+        x: space.x + bestFit.gridWidth,
+        y: space.y,
+        width: space.width - bestFit.gridWidth,
+        height: space.height,
+      });
+    }
+
+    // Create bottom space if large enough
+    if (space.height - bestFit.gridHeight >= MIN_USEFUL_SIZE) {
+      workingSpaces.push({
+        x: space.x,
+        y: space.y + bestFit.gridHeight,
+        width: bestFit.gridWidth,
+        height: space.height - bestFit.gridHeight,
+      });
+    } else if (space.height - bestFit.gridHeight > 0) {
+      // Add to unusable if too small
+      unusableSpaces.push({
+        x: space.x,
+        y: space.y + bestFit.gridHeight,
+        width: bestFit.gridWidth,
+        height: space.height - bestFit.gridHeight,
+      });
+    }
   }
 
-  return placedGrids;
+  // Add remainder spaces if they exist
+  if (remainderX > 0) {
+    unusableSpaces.push({
+      x: totalGridsX,
+      y: 0,
+      width: remainderX / 42, // Convert to grid units
+      height: totalGridsY,
+    });
+  }
+
+  if (remainderY > 0) {
+    unusableSpaces.push({
+      x: 0,
+      y: totalGridsY,
+      width: totalGridsX,
+      height: remainderY / 42, // Convert to grid units
+    });
+  }
+
+  // Add corner piece if both remainders exist
+  if (remainderX > 0 && remainderY > 0) {
+    unusableSpaces.push({
+      x: totalGridsX,
+      y: totalGridsY,
+      width: remainderX / 42,
+      height: remainderY / 42,
+    });
+  }
+
+  return { 
+    placedGrids, 
+    freeSpaces: unusableSpaces 
+  };
 }

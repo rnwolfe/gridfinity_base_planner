@@ -47,3 +47,8 @@ export interface GridCount {
   y: number;
   count: number;
 }
+
+export interface Spacer {
+  width: number;
+  height: number;
+}

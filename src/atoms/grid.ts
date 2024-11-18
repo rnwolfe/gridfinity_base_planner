@@ -1,5 +1,5 @@
 import { atom } from "jotai";
-import type { MaterialSettings, PlacedGrid } from "~/types";
+import type { MaterialSettings, PlacedGrid, Spacer } from "~/types";
 
 // Material settings atom
 export const materialSettingsAtom = atom<MaterialSettings>({
@@ -18,3 +18,6 @@ export const gridDimensionsAtom = atom({
 
 // Placed grids atom
 export const placedGridsAtom = atom<PlacedGrid[]>([]);
+
+// Free spaces atom
+export const freeSpacesAtom = atom<Spacer[]>([]);
