@@ -38,7 +38,7 @@ export default function GridVisualizer() {
   const materialProps = getMaterialProperties(materialSettings.finish);
 
   return (
-    <div className="relative aspect-square w-full max-h-[500px] overflow-hidden rounded-lg border bg-white shadow-sm">
+    <div className="relative aspect-square max-h-[500px] w-full overflow-hidden rounded-lg border bg-white shadow-sm">
       <CameraControls />
       <Canvas
         shadows
