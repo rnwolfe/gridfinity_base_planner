@@ -54,7 +54,6 @@ export function GridSummary({ placedGrids }: { placedGrids: PlacedGrid[] }) {
     return { horizontalSpaces, verticalSpaces };
   }, [freeSpaces]);
 
-  const measurementUnitLabel = measurementUnit === "mm" ? "mm" : "in";
   const mmToIn = (mm: number) => Math.round(mm / 25.4 * 100) / 100;
 
   return (
