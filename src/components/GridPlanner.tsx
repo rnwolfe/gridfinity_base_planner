@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import GridPlannerForm from "./GridPlannerForm";
 import GridVisualizer from "./GridVisualizer";
 import { calculateGridPlacements } from "../lib/gridPlacement";
-import MaterialControls from "./MaterialControls";
+// import MaterialControls from "./MaterialControls";
 import { gridDimensionsAtom, placedGridsAtom, freeSpacesAtom } from "~/atoms/grid";
 import { formDimensionsAtom } from "~/atoms/form";
 import { GridSummary } from "./GridSummary";
