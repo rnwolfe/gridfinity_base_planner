@@ -1,21 +1,27 @@
 import type { GridfinityModel } from "~/atoms/models";
 import { Card } from "./ui/card";
 import Image from "next/image";
+import { type DragEvent } from "react";
 
 interface ModelCardProps {
   model: GridfinityModel;
   isSelected: boolean;
   selectedCount?: number;
-  onClick: () => void;
 }
 
-export function ModelCard({ model, isSelected, selectedCount = 0, onClick }: ModelCardProps) {
+export function ModelCard({ model, isSelected, selectedCount = 0 }: ModelCardProps) {
+  const handleDragStart = (e: DragEvent<HTMLDivElement>) => {
+    e.dataTransfer.setData("application/json", JSON.stringify(model));
+    e.dataTransfer.effectAllowed = "copy";
+  };
+
   return (
     <Card
-      className={`p-3 cursor-pointer transition-colors hover:bg-gray-50 ${
+      className={`p-3 cursor-grab transition-colors hover:bg-gray-50 ${
         isSelected ? "ring-2 ring-blue-500" : ""
       }`}
-      onClick={onClick}
+      draggable
+      onDragStart={handleDragStart}
     >
       <div className="flex gap-3">
         <div className="w-[100px] h-[100px] bg-gray-50 rounded flex items-center justify-center relative">
@@ -25,6 +31,7 @@ export function ModelCard({ model, isSelected, selectedCount = 0, onClick }: Mod
             width={100}
             height={100}
             className="object-contain"
+            draggable={false}
             onError={(e) => {
               console.error('Failed to load image for model:', model.id);
               e.currentTarget.src = '';

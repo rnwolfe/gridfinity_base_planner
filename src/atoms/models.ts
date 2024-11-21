@@ -1,8 +1,9 @@
 import { atom } from "jotai";
+import type * as THREE from "three";
 
 export interface GridfinityModel {
   id: string;
-  instanceId?: string;
+  instanceId?: string | undefined;
   name: string;
   path: string;
   category: string;
@@ -12,6 +13,12 @@ export interface GridfinityModel {
     depth?: number;
   };
   description?: string;
+  position?: THREE.Vector3;
+  gridPosition?: {
+    x: number;
+    y: number;
+  };
+  rotation?: number;
 }
 
 // Pre-defined models in public/stl

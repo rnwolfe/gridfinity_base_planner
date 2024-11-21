@@ -5,6 +5,8 @@ import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
 import { type Color } from "three";
 import { useMemo } from "react";
 import type * as THREE from "three";
+import { TextureLoader, Vector2 } from 'three';
+
 interface GridfinityBaseProps {
   position: [number, number, number];
   color: Color | string;
@@ -22,7 +24,6 @@ export default function GridfinityBase({
   color,
   width,
   height,
-  materialProps,
 }: GridfinityBaseProps) {
   const geometry = useLoader(STLLoader, "/frame-1x1.stl");
   const scale = 0.001; // Convert mm to meters
@@ -43,6 +44,14 @@ export default function GridfinityBase({
     return cellPositions;
   }, [position, width, height]);
 
+  // Add texture loaders
+  const [normalMap, heightMap, roughnessMap, aoMap] = useLoader(TextureLoader, [
+    '/materials/Plastic_Rough_001_normal.jpg',
+    '/materials/Plastic_Rough_001_height.png',
+    '/materials/Plastic_Rough_001_roughness.jpg',
+    '/materials/Plastic_Rough_001_ambientOcclusion.jpg',
+  ]);
+
   return (
     <group>
       {cells.map((cellPosition, index) =>
@@ -56,10 +65,20 @@ export default function GridfinityBase({
             castShadow
             receiveShadow
           >
-            <meshStandardMaterial
+            <meshPhysicalMaterial
               color={color}
-              roughness={materialProps.roughness}
-              metalness={materialProps.metalness}
+              roughness={20}
+              roughnessMap={roughnessMap}
+              normalMap={normalMap}
+              normalScale={new Vector2(10, 10)}
+              displacementMap={heightMap}
+              displacementScale={1}
+              aoMap={aoMap}
+              aoMapIntensity={1.5}
+              metalness={0.1}
+              clearcoat={0}
+              clearcoatRoughness={0.2}
+              envMapIntensity={0.8}
             />
           </mesh>
         ) : null,

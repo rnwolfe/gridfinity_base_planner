@@ -10,3 +10,4 @@ export const cameraControlsAtom = atom<{
 
 export const showGridLabelsAtom = atom(true);
 export const showPlaneAtom = atom(true);
+export const orbitControlsEnabledAtom = atom(true);
