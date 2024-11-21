@@ -6,11 +6,16 @@ import GridPlannerForm from "./GridPlannerForm";
 import GridVisualizer from "./GridVisualizer";
 import { calculateGridPlacements } from "../lib/gridPlacement";
 // import MaterialControls from "./MaterialControls";
-import { gridDimensionsAtom, placedGridsAtom, freeSpacesAtom } from "~/atoms/grid";
+import {
+  gridDimensionsAtom,
+  placedGridsAtom,
+  freeSpacesAtom,
+} from "~/atoms/grid";
 import { formDimensionsAtom } from "~/atoms/form";
 import { GridSummary } from "./GridSummary";
 import { InfoIcon } from "lucide-react";
 import { Alert, AlertTitle, AlertDescription } from "~/components/ui/alert";
+import { ModelSelector } from "./ModelSelector";
 
 export default function GridPlanner() {
   const [, setGridDimensions] = useAtom(gridDimensionsAtom);
@@ -20,7 +25,7 @@ export default function GridPlanner() {
 
   useEffect(() => {
     const { width, height, maxGridX, maxGridY } = formDimensions;
-    console.log('Form dimensions:', formDimensions);
+    console.log("Form dimensions:", formDimensions);
 
     setGridDimensions({
       width: width / 1000,
@@ -28,19 +33,23 @@ export default function GridPlanner() {
     });
 
     const result = calculateGridPlacements(width, height, maxGridX, maxGridY);
-    console.log('Calculation result:', result);
-    
+    console.log("Calculation result:", result);
+
     setPlacedGrids(result.placedGrids);
     setFreeSpaces(result.freeSpaces);
   }, [formDimensions, setGridDimensions, setPlacedGrids, setFreeSpaces]);
 
   return (
     <div className="flex w-full flex-col gap-6 lg:flex-row">
-      <div className="w-full lg:w-1/3">
+      <div className="w-full lg:w-1/4 lg:max-w-[400px]">
         <GridPlannerForm />
-        {placedGrids.length > 0 && <GridSummary placedGrids={placedGrids} />}
+        {placedGrids.length > 0 && (
+          <>
+            <GridSummary placedGrids={placedGrids} />
+          </>
+        )}
       </div>
-      <div className="w-full select-none lg:w-2/3">
+      <div className="w-full select-none lg:w-3/4">
         {placedGrids.length > 0 && (
           <div className="flex flex-col gap-6 lg:flex-row">
             <div className="flex w-full select-none flex-col gap-2">
@@ -57,6 +66,13 @@ export default function GridPlanner() {
             {/* <div className="w-full lg:w-1/3">
               <MaterialControls />
             </div> */}
+            <div className="mt-4 lg:mt-0 rounded-lg border bg-white p-4">
+              <h3 className="mb-2 font-medium">STL Models (Work in progress)</h3>
+              <ModelSelector />
+              <p className="mt-4 text-sm text-gray-600">
+                Select a model to preview and place on the grid
+              </p>
+            </div>
           </div>
         )}
       </div>

@@ -23,6 +23,7 @@ export interface MaterialSettings {
   selectedColors: string[];
   planeColor: string;
   planeTexture?: string;
+  backgroundStyle: "simple" | "environment" | "gradient";
   environment:
     | "apartment"
     | "city"

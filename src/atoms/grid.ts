@@ -3,11 +3,12 @@ import type { MaterialSettings, PlacedGrid, Spacer } from "~/types";
 
 // Material settings atom
 export const materialSettingsAtom = atom<MaterialSettings>({
-  finish: "semi-gloss",
+  finish: "matte",
   useRandomColors: true,
   selectedColors: ["#ff0000"],
-  planeColor: "#f5f5f5",
+  planeColor: "#ffffff",
   environment: "warehouse",
+  backgroundStyle: "simple",
 });
 
 // Grid dimensions atom

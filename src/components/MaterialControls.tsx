@@ -29,6 +29,15 @@ export default function MaterialControls() {
     "studio",
     "sunset",
     "warehouse",
+    "bright",
+    "cosmic",
+    "industrial"
+  ] as const;
+
+  const backgroundOptions = [
+    { label: "Simple", value: "simple" },
+    { label: "Environment", value: "environment" },
+    { label: "Gradient", value: "gradient" }
   ] as const;
 
   return (
@@ -180,6 +189,30 @@ export default function MaterialControls() {
             }
             className="h-8 w-full"
           />
+        </div>
+
+        <div className="space-y-2">
+          <Label className="text-sm font-medium">Background Style</Label>
+          <Select
+            value={settings.backgroundStyle}
+            onValueChange={(value) =>
+              setSettings({
+                ...settings,
+                backgroundStyle: value as typeof backgroundOptions[number]["value"],
+              })
+            }
+          >
+            <SelectTrigger className="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {backgroundOptions.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>

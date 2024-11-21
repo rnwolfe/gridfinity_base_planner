@@ -28,38 +28,7 @@ function insertSpace(freeSpaces: Space[], newSpace: Space) {
   }
 }
 
-function splitSpace(
-  freeSpaces: Space[],
-  space: Space,
-  gridWidth: number,
-  gridHeight: number,
-) {
-  // Remove the used space
-  const index = freeSpaces.indexOf(space);
-  if (index > -1) {
-    freeSpaces.splice(index, 1);
-  }
-
-  // Create right space
-  if (space.width - gridWidth > 0) {
-    insertSpace(freeSpaces, {
-      x: space.x + gridWidth,
-      y: space.y,
-      width: space.width - gridWidth,
-      height: space.height,
-    });
-  }
-
-  // Create bottom space
-  if (space.height - gridHeight > 0) {
-    insertSpace(freeSpaces, {
-      x: space.x,
-      y: space.y + gridHeight,
-      width: gridWidth,
-      height: space.height - gridHeight,
-    });
-  }
-}
+// git 
 
 export function calculateGridPlacements(
   width: number,
