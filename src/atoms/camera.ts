@@ -7,3 +7,6 @@ export const cameraControlsAtom = atom<{
   action: null,
   timestamp: 0,
 });
+
+export const showGridLabelsAtom = atom(true);
+export const showPlaneAtom = atom(true);

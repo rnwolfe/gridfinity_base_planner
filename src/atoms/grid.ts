@@ -6,7 +6,7 @@ export const materialSettingsAtom = atom<MaterialSettings>({
   finish: "semi-gloss",
   useRandomColors: true,
   selectedColors: ["#ff0000"],
-  planeColor: "#f5f5f5",
+  planeColor: "#DCDFE0",
   environment: "warehouse",
 });
 

@@ -1,13 +1,24 @@
 "use client";
-
 import { Button } from "~/components/ui/button";
-import { RefreshCcwDot, ArrowDown } from "lucide-react";
+import {
+  RefreshCcwDot,
+  ArrowDown,
+  SquareMinusIcon,
+  SquarePlusIcon,
+  TagIcon,
+} from "lucide-react";
 import { useAtom } from "jotai";
-import { cameraControlsAtom } from "~/atoms/camera";
+import {
+  cameraControlsAtom,
+  showGridLabelsAtom,
+  showPlaneAtom,
+} from "~/atoms/camera";
 import { useEffect } from "react";
 
 export function CameraControls() {
   const [, setCameraControl] = useAtom(cameraControlsAtom);
+  const [showGridLabels, setShowGridLabels] = useAtom(showGridLabelsAtom);
+  const [showPlane, setShowPlane] = useAtom(showPlaneAtom);
 
   const handleReset = () => {
     setCameraControl({ action: "reset", timestamp: Date.now() });
@@ -44,6 +55,26 @@ export function CameraControls() {
         >
           <ArrowDown className="h-4 w-4" /> Top
         </Button>
+        <div className="flex items-center gap-2">
+            <Button
+              onClick={() => setShowGridLabels(!showGridLabels)}
+              variant={"secondary"}
+              title="Show Grid Labels"
+            >
+              <TagIcon className="h-4 w-4" />
+            </Button>
+            <Button
+              onClick={() => setShowPlane(!showPlane)}
+              variant={"secondary"}
+              title="Show Base Plane"
+            >
+              {showPlane ? (
+                <SquareMinusIcon className="h-4 w-4" />
+              ) : (
+                <SquarePlusIcon className="h-4 w-4" />
+              )}
+            </Button>
+          </div>
       </div>
     </div>
   );

@@ -11,16 +11,25 @@ import {
   gridDimensionsAtom,
   placedGridsAtom,
 } from "~/atoms/grid";
-import { GridOutline } from "./GridOutline";
+// import { GridOutline } from "./GridOutline";
 import { GridLabel } from "./GridLabel";
 import { CameraControls } from "./CameraControls";
 import { CameraController } from "~/components/CameraController";
+import { isSTLDraggingOverAtom } from "~/atoms/stl";
+import { STLDropOverlay } from "./STLDropOverlay";
+import { PreviewModel } from "./PreviewModel";
+import { selectedModelsAtom } from "~/atoms/models";
+import { showGridLabelsAtom, showPlaneAtom } from "~/atoms/camera";
 
 export default function GridVisualizer() {
   const [materialSettings] = useAtom(materialSettingsAtom);
   const [{ width: overallWidth, height: overallHeight }] =
     useAtom(gridDimensionsAtom);
   const [grids] = useAtom(placedGridsAtom);
+  const [isSTLDraggingOver] = useAtom(isSTLDraggingOverAtom);
+  const [selectedModels] = useAtom(selectedModelsAtom);
+  const [showGridLabels] = useAtom(showGridLabelsAtom);
+  const [showPlane] = useAtom(showPlaneAtom);
 
   const cellSize = 0.042; // 42mm in meters
 
@@ -38,7 +47,8 @@ export default function GridVisualizer() {
   const materialProps = getMaterialProperties(materialSettings.finish);
 
   return (
-    <div className="relative aspect-square max-h-[500px] w-full overflow-hidden rounded-lg border bg-white shadow-sm">
+    <div className="relative aspect-square max-h-[400px] lg:max-h-[670px] w-full overflow-hidden rounded-lg border bg-white shadow-sm">
+      <STLDropOverlay />
       <CameraControls />
       <Canvas
         shadows
@@ -60,27 +70,29 @@ export default function GridVisualizer() {
 
           <Suspense fallback={null}>
             {/* Background plane */}
-            <mesh
-              position={[
-                overallWidth / 2,
-                -0.001,
-                overallHeight / 2 - cellSize,
-              ]}
-              rotation={[-Math.PI / 2, 0, 0]}
-            >
-              <planeGeometry args={[overallWidth, overallHeight]} />
-              <meshStandardMaterial
-                color={materialSettings.planeColor}
-                map={
-                  materialSettings.planeTexture
-                    ? new THREE.TextureLoader().load(
-                        materialSettings.planeTexture,
-                      )
-                    : null
-                }
-                {...getMaterialProperties("matte")}
-              />
-            </mesh>
+            {showPlane && (
+              <mesh
+                position={[
+                  overallWidth / 2,
+                  -0.001,
+                  overallHeight / 2 - cellSize,
+                ]}
+                rotation={[-Math.PI / 2, 0, 0]}
+              >
+                <planeGeometry args={[overallWidth, overallHeight]} />
+                <meshStandardMaterial
+                  color={materialSettings.planeColor}
+                  map={
+                    materialSettings.planeTexture
+                      ? new THREE.TextureLoader().load(
+                          materialSettings.planeTexture,
+                        )
+                      : null
+                  }
+                  {...getMaterialProperties("matte")}
+                />
+              </mesh>
+            )}
             {grids.map((grid, index) => {
               const baseX = grid.position.x * cellSize;
               const baseZ = grid.position.y * cellSize;
@@ -101,26 +113,44 @@ export default function GridVisualizer() {
                     color={color ?? "#ca2929"}
                     materialProps={materialProps}
                   />
-                  <GridOutline
+                  {/* <GridOutline
                     position={[baseX, 0, baseZ - cellSize]}
                     width={gridWidth}
                     height={gridHeight}
                     color={color ?? "#ca2929"}
-                  />
-                  <GridLabel
-                    position={[
-                      baseX + gridWidth / 2,
-                      0.01,
-                      baseZ + gridHeight / 2 - cellSize,
-                    ]}
-                    text={`${grid.x}x${grid.y}`}
-                  />
+                  /> */}
+                  {showGridLabels && (
+                    <GridLabel
+                      position={[
+                        baseX + gridWidth / 2,
+                        0.01,
+                        baseZ + gridHeight / 2 - cellSize,
+                      ]}
+                      text={`${grid.x}x${grid.y}`}
+                    />
+                  )}
                 </group>
               );
             })}
           </Suspense>
         </Suspense>
+        
+        {/* {gridSTLs.map((stl) => (
+          <STLModel 
+            key={stl.id}
+            stl={stl}
+            cellSize={cellSize}
+          />
+        ))} */}
+
+        {selectedModels.map((model) => (
+          <PreviewModel key={model.instanceId} model={model} />
+        ))}
       </Canvas>
+      
+      {isSTLDraggingOver && (
+        <div className="absolute inset-0 cursor-move bg-black/10" />
+      )}
     </div>
   );
 }
