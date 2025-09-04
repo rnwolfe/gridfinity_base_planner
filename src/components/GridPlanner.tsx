@@ -53,7 +53,7 @@ export default function GridPlanner() {
       }
     };
 
-    loadConfigFromURL();
+    void loadConfigFromURL();
   }, [availableModels, setFormDimensions, setMeasurementUnit, setMaterialSettings, setSelectedModels]);
 
   useEffect(() => {

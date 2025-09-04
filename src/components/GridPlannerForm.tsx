@@ -108,6 +108,7 @@ export default function GridPlannerForm() {
         setLinkCopied(true);
         setTimeout(() => setLinkCopied(false), 3000);
       } catch (fallbackError) {
+        console.error("Fallback copy failed:", fallbackError);
         alert("Failed to generate sharing link. Please try again.");
       }
     }
